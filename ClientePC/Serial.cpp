@@ -1,3 +1,16 @@
+/**
+Escola Politecnica da Universidade de Sao Paulo
+0323100 - Introducao a Engenharia Eletrica - 2015
+
+Projeto de Câmara Térmica
+
+Grupo 5
+    Daniel Nery Silva de Oliveira - 9349051
+    Daniel Seiji Tsutsumi         - 9349005
+    Mariana Sartori Testa         - 9348773
+    Mateus Almeida Barbosa        - 9349072
+*/
+
 #include "Serial.hpp"
 
 #include <stdexcept>
@@ -10,7 +23,7 @@ namespace IntroEE {
 		if ((fd = open(dev.data(), O_RDWR | O_NOCTTY)) < 0)
 			throw std::runtime_error("Error opening serial");
 
-		std::cout << "Serial opened as: " << fd << std::endl;
+		std::cout << "Serial opened with file descriptor: " << fd << std::endl;
 
 		usleep(3500 * 1000);
 

@@ -13,28 +13,26 @@ Grupo 5
 
 #pragma once
 
-#include <cstdlib>
-#include <cstring>
-#include <cstdint>
-#include <cstdio>
 #include <string>
 
-#include <sys/ioctl.h>
-#include <termios.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <errno.h>
+#include <ncurses.h>
 
 namespace IntroEE {
-	class Serial {
-	private:
-		int fd;
-		struct termios tty;
+	class Interface {
+		WINDOW* tela1;
+		WINDOW* tela2;
+		std::string msg;
+		std::string plastAtual;
+		int meiox;
+		int x;
 
 	public:
-		Serial(std::string dev);
-		~Serial();
-		int read(std::string& str);
-		void write(std::string data);
+		Interface();
+
+		void setPlastico(std::string plast);
+
+		void printTheBox();
+		void telaInicial();
+		void telaControle(float temp, int minutos, bool fan, bool buzzer, bool rele, std::string aviso);
 	};
 }

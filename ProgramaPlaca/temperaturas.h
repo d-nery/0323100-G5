@@ -11,22 +11,9 @@ Grupo 5
     Mateus Almeida Barbosa        - 9349072
 */
 
-/**
- * Programa principal da KL25Z
- *
- * Inicia a camara termica
- */
+#pragma once
 
-#include "Camara.hpp"
-
-using namespace IntroEE;
-
-int main(void) {
-    Camara camara;
-
-    while (1) {
-        camara.waitStartCommand();
-        camara.start();
-        camara.stop();
-    }
-}
+#define TEMP_PARAFINA 55.8
+#define TEMP_SACOLA   99.9
+#define TEMP_COPO     99.9
+#define TEMP_PET      99.9
