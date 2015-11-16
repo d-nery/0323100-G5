@@ -13,7 +13,7 @@ Grupo 5
 
 #include "Interface.hpp"
 
-#include "../ProgramaPlaca/temperaturas.h"
+#include "temperaturas.h"
 
 namespace IntroEE {
     Interface::Interface() {
