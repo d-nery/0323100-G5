@@ -14,6 +14,6 @@ Grupo 5
 #pragma once
 
 #define TEMP_PARAFINA 55.8
-#define TEMP_SACOLA   99.9
-#define TEMP_COPO     99.9
-#define TEMP_PET      99.9
+#define TEMP_SACOLA   85.0
+#define TEMP_COPO     150.0
+#define TEMP_PET      80.0
