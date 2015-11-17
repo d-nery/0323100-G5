@@ -14,6 +14,7 @@ Grupo 5
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include <atomic>
 #include <mutex>
 
 #include <ncurses.h>
@@ -29,12 +30,13 @@ Serial klz("/dev/ttyACM0");
 
 static float values[] = {0., 0., 0., 0.}; // Tempertura, Ventoinha Ligada, Resistor Ligado, buzzer Ligado
 
-static bool inicio = false;
+static atomic<bool> inicio(false);
 
 static string klz_msg;
 static mutex klz_msg_mtx;
 
 void reader() {
+try {
 	int n;
 	string temp;
 
@@ -45,45 +47,52 @@ void reader() {
 			switch (temp.back()) {
 			case 't': // Temperatura
 				values[0] = atof(temp.data());
-				klz_msg = "";
+				// klz_msg = "";
 				break;
 
 			case 'v': // Ventoinha
 				values[1] = atof(temp.data());
-				klz_msg = "";
+				// klz_msg = "";
 				break;
 
 			case 'r': // Resistor
 				values[2] = atof(temp.data());
-				klz_msg = "";
+				// klz_msg = "";
 				break;
 
-			case 'b': // LED
+			case 'b': // buzzer
 				values[3] = atof(temp.data());
-				klz_msg = "";
+				// klz_msg = "";
 				break;
 
 			case 'm': // Mensagem comum
 				temp.pop_back();
 				klz_msg = temp;
 
-			case 'i':
-				inicio = true;
-				klz_msg = "";
+			// case 'i':
+				// inicio.store(true);
+			// 	klz_msg = "";
 			}
 			klz_msg_mtx.unlock();
 		}
 		usleep(10 * 1000);
 	}
+} catch (out_of_range& e) {
+	endwin();
+	cerr << "Ocorreu um erro: " << e.what() << "\nPor favor, verifique a conexão recomece o programa\n";
+	exit(-1);
+}
 }
 
 int main(int argc, char** argv) {
+try {
 	initscr();
 	raw();
 	noecho();
 	// keypad(stdscr, TRUE);
 
 	int c, min;
+	string str;
 
 	Interface interface;
 
@@ -92,9 +101,10 @@ int main(int argc, char** argv) {
 	_reader.detach();
 
 	for (;;) {
-		interface.telaInicial();
-		timeout(-1);
-start:
+		klz_msg_mtx.lock();
+		interface.telaInicial(klz_msg);
+		klz_msg_mtx.unlock();
+		timeout(100);
 		c = getch();
 		switch(tolower(c)) {
 		case 'q':
@@ -103,31 +113,35 @@ start:
 
 		case 'a':
 			interface.setPlastico("parafina");
-			klz.write("a");
+			str = to_string(c);
+			klz.write(str);
 			break;
 
 		case 'b':
 			interface.setPlastico("garrafa PET");
-			klz.write("b");
+			str = to_string(c);
+			klz.write(str);
 			break;
 
 		case 'c':
 			interface.setPlastico("sacola plástica");
-			klz.write("c");
+			str = to_string(c);
+			klz.write(str);
 			break;
 
 		case 'd':
 			interface.setPlastico("copo descartável");
-			klz.write("d");
+			str = to_string(c);
+			klz.write(str);
 			break;
 
 		default:
-			goto start;
+			continue;
 		}
 
-		inicio = false;
+		inicio.store(false);
 
-		timeout(90);
+		timeout(500);
 		auto begin = high_resolution_clock::now();
 		auto now = high_resolution_clock::now();
 
@@ -141,16 +155,22 @@ start:
 			c = getch();
 			switch (tolower(c)) {
 				case 'z': endwin(); return 0;
+				case 'q': inicio.store(true);
 				default:
-					string str = to_string(c);
+					str = to_string(c);
 					klz.write(str);
 			}
-			usleep(10 * 1000);
+			usleep(500 * 1000);
 
-			if (inicio) break;
+			if (inicio.load()) break;
 		}
 	}
 
+} catch (out_of_range& e) {
+	endwin();
+	cerr << "Ocorreu um erro: " << e.what() << "\nPor favor, verifique a conexão recomece o programa\n";
+	exit(-1);
+}
 	endwin();
 
 	return 0;

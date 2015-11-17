@@ -72,7 +72,7 @@ namespace IntroEE {
         mvprintw(x++, meiox - msg.length()/2, msg.data());
     }
 
-    void Interface::telaInicial() {
+    void Interface::telaInicial(std::string aviso) {
         clear();
         printTheBox();
         refresh();
@@ -98,6 +98,8 @@ namespace IntroEE {
 
         msg = "D) Copo Descartável - Ponto de Fusão: " + std::to_string(int(TEMP_COPO)) + "°C | Tempo Médio: ?";
         mvwprintw(tela1, x++, 1, msg.data());
+
+        mvwprintw(tela1, 13, 1, aviso.data());
 
         wrefresh(tela1);
         refresh();
@@ -125,11 +127,11 @@ namespace IntroEE {
         x = 2;
 
         mvwprintw(tela1, x++, 1, "Temperatura da camara: %.1f", temp); x++;
-        msg = std::string("Ventoinha: ") + std::string((buzzer ? "ligada" : "desligada"));
+        msg = std::string("Ventoinha: ") + std::string((fan ? "ligada" : "desligada"));
         mvwprintw(tela1, x++, 1, msg.data());
         msg = std::string("Buzzer: ") + std::string((buzzer ? "ligado" : "desligado"));
         mvwprintw(tela1, x++, 1, msg.data());
-        msg = std::string("Aquecimento: ") + std::string((buzzer ? "ligado" : "desligado"));
+        msg = std::string("Aquecimento: ") + std::string((rele ? "ligado" : "desligado"));
         mvwprintw(tela1, x++, 1, msg.data());
 
         msg = "Derretendo " + plastAtual;

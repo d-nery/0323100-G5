@@ -32,7 +32,7 @@ namespace IntroEE {
 		void setPlastico(std::string plast);
 
 		void printTheBox();
-		void telaInicial();
+		void telaInicial(std::string aviso);
 		void telaControle(float temp, int minutos, bool fan, bool buzzer, bool rele, std::string aviso);
 	};
 }

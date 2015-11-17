@@ -43,11 +43,17 @@ namespace IntroEE {
         rele = 0;
         fan.period(0.0001);
 
-
         for (;;) {
             PC.printf("i\r\n");
-            while(!PC.readable()) wait(0.1);
+            wait(0.05);
+            while(!PC.readable()){
+                PC.printf("Esperando comando inicial.m\r\n");
+                wait(0.1);
+            }
             c = PC.getc();
+            buzzer = 1;
+            wait(0.5);
+            buzzer = 0;
             switch (c) {
                 case 'a': // Parafina
                     PC.printf("Parafina escolhida.m\r\n");
@@ -91,6 +97,8 @@ namespace IntroEE {
 autom:
         heatOn();   // Liga o resistor
         for (;;) {
+            PC.printf("Modo automatico.m\r\n");
+            wait(0.1);
             temp = LM35 * 480.0;             // Atualiza a leitura de temperatura
 
             diff = temp - temp_base;
@@ -107,28 +115,32 @@ autom:
             }
 
             PC.printf("%ft\r\n", temp);      // Envia tudo que esta acontecendo para o computador
-            wait(0.05);
+            wait(0.1);
             PC.printf("%dv\r\n", (fan > 0));
-            wait(0.05);
+            wait(0.1);
             PC.printf("%dr\r\n", (rele == 1));
-            wait(0.05);
+            wait(0.1);
             PC.printf("%db\r\n", (buzzer == 1));
-            wait(0.05);
+            wait(0.1);
 
             if (PC.readable()) {
-                if (PC.getc() == 'd') {                  // Entra no modo manual
+                c = PC.getc();
+                wait(0.05);
+                if (c == 'd') {                  // Entra no modo manual
                     fan = 0.;
                     for (;;) {
+                        PC.printf("Modo manual.m\r\n");
+                        wait(0.1);
                         temp = LM35 * 480.0;             // Atualiza a leitura de temperatura
 
                         PC.printf("%ft\r\n", temp);      // Envia tudo que esta acontecendo para o computador
-                        wait(0.05);
+                        wait(0.1);
                         PC.printf("%dv\r\n", (fan > 0));
-                        wait(0.05);
+                        wait(0.1);
                         PC.printf("%dr\r\n", (rele == 1));
-                        wait(0.05);
+                        wait(0.1);
                         PC.printf("%db\r\n", (buzzer == 1));
-                        wait(0.05);
+                        wait(0.1);
 
                         if (PC.readable()) {
                             c = PC.getc();
