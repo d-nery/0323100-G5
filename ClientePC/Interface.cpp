@@ -87,13 +87,13 @@ namespace IntroEE {
 
         x = 2;
 
-        msg = "A) Parafina         - Ponto de Fusão: " + std::to_string(int(TEMP_PARAFINA)) + "°C | Tempo Médio: 30 minutos.";
+        msg = "A) Parafina         - Ponto de Fusão: " + std::to_string(int(TEMP_PARAFINA)) + "°C  | Tempo Médio: 30+ min.";
         mvwprintw(tela1, x++, 1, msg.data()); x++;
 
-        msg = "B) Garrafa PET      - Ponto de Fusão: " + std::to_string(int(TEMP_PET)) + "°C | Tempo Médio: ?";
+        msg = "B) Garrafa PET      - Ponto de Fusão: " + std::to_string(int(TEMP_PET)) + "°C  | Tempo Médio: ?";
         mvwprintw(tela1, x++, 1, msg.data());
 
-        msg = "C) Sacola Plástica  - Ponto de Fusão: " + std::to_string(int(TEMP_SACOLA)) + "°C | Tempo Médio: ?";
+        msg = "C) Sacola Plástica  - Ponto de Fusão: " + std::to_string(int(TEMP_SACOLA)) + "°C  | Tempo Médio: ?";
         mvwprintw(tela1, x++, 1, msg.data());
 
         msg = "D) Copo Descartável - Ponto de Fusão: " + std::to_string(int(TEMP_COPO)) + "°C | Tempo Médio: ?";
